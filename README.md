@@ -40,12 +40,7 @@ src="https://github.com/youmeizhang/Movie-Recommendation-Website-using-Apache-Sp
 <img width="100%" height="100%" alt="portfolio_view" 
 src="https://github.com/youmeizhang/Movie-Recommendation-Website-using-Apache-Spark-and-Flask/blob/master/snapshots/login.png">
 
-
-
-
-
 credit to: [Jose A Dianes](https://github.com/jadianes/spark-movie-lens)
-airbnb.png
 
 
 
