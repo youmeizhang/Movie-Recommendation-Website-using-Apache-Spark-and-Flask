@@ -36,7 +36,7 @@ class RecommendationEngine:
         """
         #load the trained model
         logger.info("Loading the ALS model from file...")
-        model_path = os.path.join('file:///Desktop/recommendation', 'models', 'movie_lens_als')
+        model_path = os.path.join('file:///Users/yumi.zhang/Desktop/recommendation', 'models', 'movie_lens_als')
         self.model = MatrixFactorizationModel.load(sc, model_path)
         logger.info("ALS model loaded successfully!")
         

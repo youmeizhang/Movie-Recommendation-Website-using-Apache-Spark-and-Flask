@@ -39,11 +39,11 @@ def home():
         #select the top 10 movies that user gave high / low ratings
         rated_number, user_rated_movies_high, user_rated_movies_low, my_ratings_RDD = recommendation_engine.get_rated_movies(user_id)
         
-        movie_file = pd.read_csv('file:///Desktop/recommendation/datasets/ml-latest-small/movies.csv')
-        tag_file = pd.read_csv('file:///Desktop/recommendation/datasets/ml-latest-small/tags.csv')
+        movie_file = pd.read_csv('file:///Users/yumi.zhang/Desktop/recommendation/datasets/ml-latest-small/movies.csv')
+        tag_file = pd.read_csv('file:///Users/yumi.zhang/Desktop/recommendation/datasets/ml-latest-small/tags.csv')
           
         def get_poster_online(movidId):
-            links = pd.read_csv('file:///Desktop/recommendation/datasets/ml-latest-small/links.csv')
+            links = pd.read_csv('file:///Users/yumi.zhang/Desktop/recommendation/datasets/ml-latest-small/links.csv')
             
             number = "tt00"
             imdbId = list(links.loc[links['movieId'] == movidId, 'imdbId'])
@@ -119,6 +119,10 @@ def home():
             movieId = user_rated_movies_low[i][1]
             low_rated_movie_url = get_poster_online(movieId)
             low_rated_movie_list.append(low_rated_movie_url)
+            
+        
+        #get the newest movie information
+        newmovie_src, newmovie_title, cinemas_name = get_newest_movies_info()
                 
         return render_template('home.html', user_id = user_id, url_list = url_list, 
                                movie_year_name = movie_year_name,
@@ -126,8 +130,43 @@ def home():
                                rated_number = rated_number, high_rated_movie_list = high_rated_movie_list,
                                low_rated_movie_list = low_rated_movie_list, 
                                low_movie_year_name = low_movie_year_name,
-                               high_movie_year_name = high_movie_year_name)
-    
+                               high_movie_year_name = high_movie_year_name,
+                               newmovie_src = newmovie_src, newmovie_title = newmovie_title,
+                               cinemas_name = cinemas_name)
+ 
+def get_newest_movies_info():
+    url = "https://www.imdb.com/movies-in-theaters/"         
+    response = get(url)
+    html_soup = BeautifulSoup(response.text, 'html.parser')
+
+    movie_containers = html_soup.find_all('div', class_ = 'image')
+    newmovie_src = []
+    title = []
+    number = []
+    for i in range(len(movie_containers)):
+        newmovie_src.append(movie_containers[i].a.div.img['src'])
+        title.append(movie_containers[i].a.div.img['title'])
+        number.append(movie_containers[i].a['href'].split('/')[2])
+      
+    url = []
+    for i in number:
+        url.append('https://www.imdb.com/showtimes/title/%s/?ref_=inth_ov_sh' % i)
+        
+    #showtime_url = "https://www.imdb.com/showtimes/title/tt4779682/?ref_=inth_ov_sh"
+    cinemas_name = []
+    for i in url:
+        span_name = []
+        showtime_response = get(i)
+        showtime_html_soup = BeautifulSoup(showtime_response.text, 'html.parser')
+        new_movie_containers = showtime_html_soup.find_all('div', class_="fav_box")
+        
+        for i in range(len(new_movie_containers)):
+            span_name.append(new_movie_containers[i].h3.a.span.text)
+            
+        cinemas_name.append(span_name)
+        
+    return newmovie_src, title, cinemas_name
+
 @main.route('/login', methods=['POST'])
 def login():
     POST_USERNAME = str(request.form['username'])

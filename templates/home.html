@@ -12,7 +12,14 @@
             vertical-align: text-bottom;
             margin:10px;
             border:0px;
-            padding:0;}
+            padding:0;
+            position: relative;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
 
         .member + .member{
             margin-top: 100px;
@@ -23,6 +30,12 @@
             color: #777777;
             font-size: 12px;
         }
+        .new_movie_name {
+            color: #ffffff;
+            font-size: 12px;
+            text-align: left;
+        }
+
         .member img {
             width: 100%;
             display: block;
@@ -69,7 +82,37 @@
             width: 600px;
         }
 
+        .member .popuptext {
+            visibility: hidden;
+            width: 160px;
+            background-color: #777777;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px 0;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -80px;
+        }
 
+        /* Popup arrow */
+        .member .popuptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #777777 transparent transparent transparent;
+        }
+
+        /* Toggle this class - hide and show the popup */
+        .member .show {
+            visibility: visible;
+        }
     </style>
 
     <meta charset="utf-8">
@@ -157,6 +200,54 @@
     </div>
 
     <div class="container-fluid bg-3 text-center">
+        <h4 style="color:#777777; letter-spacing: 7px;">NEWEST MOVIES</h4>
+
+        {% for url in newmovie_src %}
+        {% set cnt = loop.index - 1 %}
+        <div class="member" onclick="myFunction()">
+            <script>
+                // document.write( "<a href=\"" + {{ url|tojson|safe }} + "\"><img src=\"" + {{ url|tojson|safe }} +  "\" \/></a>" );
+                document.write( "<img src=\"" + {{ url|tojson|safe }} +  "\" >" );
+                //document.write( "<a class=\""popup"\" onclick=\""myFunction()"\"><img src=\"" + {{ url|tojson|safe }} +  "\" \/></a>" );
+            </script>
+                <span class="popuptext" id="myPopup">
+                    <p style="color:#FFFFFF; letter-spacing: 3px; font-size: 10px;">WATCH IT AT: </p>
+                    {% for i in cinemas_name[cnt] %}
+                    <div class="new_movie_name">
+                        {{ i }}<br />
+                    </div>
+                        {% endfor %}
+                </span>
+                <div class="name">{{ newmovie_title[cnt] }}<br /></div>
+            <!--
+            <div class="name">{{ newmovie_title[cnt] }}<br /><p style="color:#777777; letter-spacing: 3px; font-size: 8px;">WATCH IT AT: </p>
+                {% for i in cinemas_name[cnt] %}
+                    <div class="new_movie_name">
+                        {{ i }}<br />
+                        {% endfor %}
+                    </div>
+            </div>
+            -->
+        </div>
+        {% endfor %}
+
+    </div>
+
+    <script>
+        // When the user clicks on div, open the popup
+        function myFunction() {
+            var popup = document.getElementById("myPopup");
+            popup.classList.toggle("show");
+        }
+    </script>
+
+    <div class="container-fluid bg-3 text-center">
+        <h4 style="color:#777777; letter-spacing: 7px;">NEARBY CINEMAS</h4>
+        <div style="width: 50%; margin: 0px auto;" id="map"></div>
+    </div>
+
+
+    <div class="container-fluid bg-3 text-center">
         <h4 style="color:#777777; letter-spacing: 7px;">MY RATING HISTORY</h4>
         <P style="color:#777777; letter-spacing: 3px; font-size: 12px;">TOP 10 movies with high ratings that I gave </P>
 
@@ -187,10 +278,6 @@
         {% endfor %}
     </div>
 
-    <div class="container-fluid bg-3 text-center">
-        <h4 style="color:#777777; letter-spacing: 7px;">NEARBY CINEMAS</h4>
-        <div style="width: 50%; margin: 0px auto;" id="map"></div>
-    </div>
     <script>
         var map, infoWindow;
         function initMap() {
