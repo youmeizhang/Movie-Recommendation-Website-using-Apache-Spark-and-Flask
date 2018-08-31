@@ -1,5 +1,7 @@
 ## Movie Recommendation Website using Apache Spark and Flask
 
+credit to: [Jose A Dianes](https://github.com/jadianes/spark-movie-lens)
+
 * Usage
   * Spark
   * Flask
@@ -26,7 +28,10 @@ cd /Desktop/Movie-Recommendation-Website-using-Apache-Spark-and-Flask
 src="https://github.com/youmeizhang/Movie-Recommendation-Website-using-Apache-Spark-and-Flask/blob/master/snapshots/user%20information.png">
 
 <img width="100%" height="100%" alt="portfolio_view" 
-src="https://github.com/youmeizhang/Movie-Recommendation-Website-using-Apache-Spark-and-Flask/blob/master/snapshots/recommendation%20for%20you.png">
+src="https://github.com/youmeizhang/Movie-Recommendation-Website-using-Apache-Spark-and-Flask/blob/master/snapshots/recommeded%20movies.png">
+
+<img width="100%" height="100%" alt="portfolio_view" 
+src="https://github.com/youmeizhang/Movie-Recommendation-Website-using-Apache-Spark-and-Flask/blob/master/snapshots/newest%20movies.png">
 
 <img width="100%" height="100%" alt="portfolio_view" 
 src="https://github.com/youmeizhang/Movie-Recommendation-Website-using-Apache-Spark-and-Flask/blob/master/snapshots/top%2010%20high.png">
@@ -35,12 +40,7 @@ src="https://github.com/youmeizhang/Movie-Recommendation-Website-using-Apache-Sp
 src="https://github.com/youmeizhang/Movie-Recommendation-Website-using-Apache-Spark-and-Flask/blob/master/snapshots/top%2010%20low.png">
 
 <img width="100%" height="100%" alt="portfolio_view" 
-src="https://github.com/youmeizhang/Movie-Recommendation-Website-using-Apache-Spark-and-Flask/blob/master/snapshots/another%20user.png">
-
-<img width="100%" height="100%" alt="portfolio_view" 
 src="https://github.com/youmeizhang/Movie-Recommendation-Website-using-Apache-Spark-and-Flask/blob/master/snapshots/login.png">
-
-credit to: [Jose A Dianes](https://github.com/jadianes/spark-movie-lens)
 
 
 
