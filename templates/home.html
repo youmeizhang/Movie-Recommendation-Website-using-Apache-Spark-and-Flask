@@ -58,9 +58,15 @@
         .bg-3 + .bg-4 {
             margin-top: 250px;
         }
+
         h3 {
             color: #777777;
             letter-spacing: 5px;
+        }
+
+        #map {
+            height: 400px;
+            width: 600px;
         }
 
 
@@ -180,6 +186,80 @@
         </div>
         {% endfor %}
     </div>
+
+    <div class="container-fluid bg-3 text-center">
+        <h4 style="color:#777777; letter-spacing: 7px;">NEARBY CINEMAS</h4>
+        <div style="width: 50%; margin: 0px auto;" id="map"></div>
+    </div>
+    <script>
+        var map, infoWindow;
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: -34.397, lng: 150.644},
+                zoom: 6
+            });
+            infoWindow = new google.maps.InfoWindow;
+            // Try HTML5 geolocation.
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+
+                    infoWindow.setPosition(pos);
+                    infoWindow.setContent('Location found.');
+
+                    var service = new google.maps.places.PlacesService(map);
+                    service.nearbySearch({
+                        location: pos,
+                        radius: 500,
+                        type: ['movie_theatre']
+                    }, callback);
+
+                    infoWindow.open(map);
+                    map.setCenter(pos);
+                }, function() {
+                    handleLocationError(true, infoWindow, map.getCenter());
+                });
+            } else {
+                handleLocationError(false, infoWindow, map.getCenter());
+            }
+        }
+        //
+        function callback(results, status) {
+            if (status === google.maps.places.PlacesServiceStatus.OK) {
+                for (var i = 0; i < results.length; i++) {
+                    createMarker(results[i]);
+                }
+            }
+        }
+
+        function createMarker(place) {
+            var placeLoc = place.geometry.location;
+            var marker = new google.maps.Marker({
+                map: map,
+                position: place.geometry.location
+            });
+
+            google.maps.event.addListener(marker, 'click', function() {
+                infowindow.setContent(place.name);
+                infowindow.open(map, this);
+            });
+        }
+
+        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+            infoWindow.setPosition(pos);
+            infoWindow.setContent(browserHasGeolocation ?
+                'Error: The Geolocation service failed.' :
+                'Error: Your browser doesn\'t support geolocation.');
+            infoWindow.open(map);
+        }
+    </script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap">
+    </script>
+
 
     <footer class="container-fluid bg-4 text-center">
         <p style="color:#777777; letter-spacing: 3px; ">Made by <a href="https://github.com/youmeizhang">Youmei Zhang</a></p>
